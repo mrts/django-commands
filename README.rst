@@ -7,8 +7,8 @@ for the Django web framework:
 - ``db_clear`` -- removes all tables from the database,
 - ``db_backup`` -- creates a backup dump of the database,
 - ``db_load`` -- loads the data from a database backup dump,
-- ``cache_clear`` -- calls ``clear_cache()`` for all objects
-  in the given models.
+- ``cache_clear`` -- calls ``clear_from_cache()`` for all objects
+  in given models.
 
 Installation
 ------------
@@ -43,8 +43,7 @@ can be used with Fabric_::
      def backup_database(self):
         with fab.cd(self.projdir):
             backup_file_prefix = os.path.join(self.backupdir,
-                    'db_backup_%s_%s' % (PROJECT_NAME, self.name,
-                        time.strftime('%Y-%m-%d-%H%M')))
+                    'db_backup_%s_%s' % (PROJECT_NAME, self.name))
             result = fab.run('./manage.py db_backup %s' % backup_file_prefix)
             assert (result.succeeded and
                     result.startswith("DB successfully backed up to:"))
