@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = __import__('django_commands').__version__
+version = "0.0.1"
 
 setup(
     name = 'django-commands',
@@ -11,4 +11,5 @@ setup(
     url="http://github.com/mrts/django-commands",
     license="MIT",
     packages=find_packages(exclude=['tests']),
+    zip_safe=False,
 )
