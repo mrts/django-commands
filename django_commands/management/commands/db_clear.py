@@ -49,7 +49,7 @@ def _drop_tables(connection, dbname, all_tables):
     tables = (connection.introspection.table_names() if all_tables else
             connection.introspection.django_table_names(only_existing=True))
     qn = connection.ops.quote_name
-    drop_table_sql = ['DROP TABLE %s;' % qn(table) for table in tables]
+    drop_table_sql = ('DROP TABLE %s;' % qn(table) for table in tables)
 
     try:
         cursor = connection.cursor()
