@@ -38,9 +38,9 @@ class Command(NoArgsCommand):
 def _confirm(interactive, dbname):
     if not interactive:
         return 'yes'
-    return raw_input("You have requested to drop all tables in the "
-            "database. \nThis will IRREVERSIBLY DESTROY all data currently "
-            "in the \n'%s' database. \nAre you sure you want to do this?\n"
+    return raw_input("You have requested to drop all tables in the '%s' "
+            "database. \nThis will IRREVERSIBLY DESTROY all data.\n"
+            "Are you sure you want to do this?\n"
             "Type 'yes' to continue, or any other value to cancel: " % dbname)
 
 def _drop_tables(connection, dbname, all_tables):
@@ -58,11 +58,8 @@ def _drop_tables(connection, dbname, all_tables):
     except Exception, e:
         transaction.rollback_unless_managed()
         raise CommandError("""Database '%s' couldn't be flushed.
-Possible reasons:
-  * The database isn't running or isn't configured correctly.
-  * At least one of the expected database tables doesn't exist.
-  * The SQL was invalid.
-The full error: %s
-The full SQL: %s""" % (dbname, e, drop_table_sql))
+%s occurred: %s
+The full SQL: \n%s""" %
+(dbname, e.__class__.__name__, e, "\n".join(drop_table_sql)))
 
     transaction.commit_unless_managed()
