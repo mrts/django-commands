@@ -1,7 +1,6 @@
-from django.core.management.base import CommandError, NoArgsCommand
-from django.core.management.color import no_style
-
 from optparse import make_option
+
+from django.core.management.base import CommandError, NoArgsCommand
 
 class Command(NoArgsCommand):
     help = "Removes tables from the database."
