@@ -25,19 +25,22 @@ class Command(NoArgsCommand):
             dbname = settings.DATABASE_NAME
         else:
             from django.db import connections, DEFAULT_DB_ALIAS
-            connection = connections[options.get('database', DEFAULT_DB_ALIAS)]
+            db_alias = options.get('database') or DEFAULT_DB_ALIAS
+            connection = connections[db_alias]
             dbname = connection.settings_dict['NAME']
 
         if _confirm(options['interactive'], dbname) == 'yes':
             _drop_tables(connection, dbname, options['all_tables'])
+        else:
+            print "Cancelled."
 
 
 def _confirm(interactive, dbname):
     if not interactive:
         return 'yes'
     return raw_input("You have requested to drop all tables in the "
-            "database. This will IRREVERSIBLY DESTROY all data currently "
-            "in the '%s' database. \nAre you sure you want to do this?\n"
+            "database. \nThis will IRREVERSIBLY DESTROY all data currently "
+            "in the \n'%s' database. \nAre you sure you want to do this?\n"
             "Type 'yes' to continue, or any other value to cancel: " % dbname)
 
 def _drop_tables(connection, dbname, all_tables):
