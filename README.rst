@@ -5,8 +5,8 @@ django-commands
 for the Django web framework:
 
 - ``db_clear`` -- removes all tables from the database,
-- ``db_backup`` -- creates a backup dump of the database,
-- ``db_load`` -- loads the data from a database backup dump,
+- ``db_backup`` -- creates a backup dump file of the database,
+- ``db_load`` -- loads data from a backup dump file to the database,
 - ``cache_clear`` -- calls ``clear_from_cache()`` for all objects
   in given models.
 
@@ -15,7 +15,7 @@ Installation
 
 Install the package with pip::
 
- $ pip install git://github.com/mrts/django-commands.git
+ $ pip install git+http://github.com/mrts/django-commands.git
 
 and add ``'django_commands'`` to ``INSTALLED_APPS`` in your Django
 project settings file::
@@ -26,7 +26,7 @@ project settings file::
  )
 
 Invoke ``./manage.py help`` to verify that the commands are available
-and for more specific usage instructions.
+and ``./manage.py help commandname`` for more specific usage instructions.
 
 Intended use
 ------------
