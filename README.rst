@@ -33,21 +33,6 @@ Intended use
 
 The commands have been created for automating remote deployments with Fabric_.
 
-For instance, here is an example that demonstrates how ``db_backup``
-can be used with Fabric_::
-
- from fabric import api as fab
-     
- class ProjectEnvironment(object):
- 
-     def backup_database(self):
-        with fab.cd(self.projdir):
-            backup_file_prefix = os.path.join(self.backupdir,
-                    'db_backup_%s_%s' % (PROJECT_NAME, self.name))
-            result = fab.run('./manage.py db_backup %s' % backup_file_prefix)
-            assert (result.succeeded and
-                    result.startswith("DB successfully backed up to:"))
-            actual_backup_file = result.split(':', 1)[1].strip()
-            return actual_backup_file
+See https://gist.github.com/768913 for example usage.
 
 .. _Fabric: http://fabfile.org
