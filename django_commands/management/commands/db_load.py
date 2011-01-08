@@ -17,6 +17,9 @@ class Command(LabelCommand):
     )
 
     def handle_label(self, label, **options):
+        if not os.access(label, os.R_OK):
+            raise CommandError("File '%s' is not readable." % label)
+
         db_conf = get_db_conf(options)
 
         if _confirm(options['interactive'], db_conf['db_name']) == 'yes':

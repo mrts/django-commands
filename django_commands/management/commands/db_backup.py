@@ -34,6 +34,7 @@ class Command(LabelCommand):
 
     def _backup_sqlite3_db(self, db_conf, outfile):
         outfile = '%s.sqlite.gz' % outfile
+        _check_writable(outfile)
         ret = os.system('sqlite3 %s .dump | gzip -9 > %s' %
                 (db_conf['db_name'], outfile))
 
@@ -46,6 +47,7 @@ class Command(LabelCommand):
         passwd = ('export PGPASSWORD=%s;' % db_conf['password']
                     if db_conf['password'] else '')
         outfile = '%s.pgsql.gz' % outfile
+        _check_writable(outfile)
         ret = os.system('%s pg_dump --compress=9 %s > %s' %
                 (passwd, build_postgres_args(db_conf), outfile))
 
@@ -53,7 +55,12 @@ class Command(LabelCommand):
 
     def _backup_mysql_db(self, db_conf, outfile):
         outfile = '%s.mysql.gz' % outfile
+        _check_writable(outfile)
         ret = os.system('mysqldump %s | gzip -9 > %s' %
                 (build_mysql_args(db_conf), outfile))
 
         return ret, outfile
+
+def _check_writable(filename):
+    if not os.access(filename, os.W_OK):
+        raise CommandError("File '%s' is not writable." % filename)
