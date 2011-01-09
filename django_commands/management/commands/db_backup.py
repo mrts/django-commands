@@ -62,5 +62,16 @@ class Command(LabelCommand):
         return ret, outfile
 
 def _check_writable(filename):
-    if not os.access(filename, os.W_OK):
-        raise CommandError("File '%s' is not writable." % filename)
+    if os.path.exists(filename):
+        raise CommandError("'%s' already exists, won't overwrite." % filename)
+    dir_path = os.path.dirname(filename)
+    if not os.access(dir_path, os.W_OK):
+        raise CommandError("Directory '%s' is not writable." % dir_path)
+
+    # or, more stringent:
+    # from __future__ import with_statement
+    # try:
+        # with open(filename, 'w'): pass
+    # except Exception, e:
+        # raise CommandError("Cannot open '%s' for writing: %s %s" %
+                # (filename, e.__class__.__name__, e))
