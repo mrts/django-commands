@@ -35,7 +35,7 @@ class Command(LabelCommand):
             print "Cancelled."
 
     def _load_sqlite3_db(self, db_conf, infile):
-        return os.system('zcat %s | sqlite3' % infile)
+        return os.system('zcat %s | sqlite3 %s' % (infile, db_conf['db_name']))
 
     def _load_postgresql_db(self, db_conf, infile):
         return self._load_postgresql_psycopg2_db(db_conf, infile)
