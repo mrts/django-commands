@@ -33,9 +33,10 @@ Intended use
 
 The commands have been created for automating remote deployments with Fabric_.
 
-See https://gist.github.com/768913 for example usage.
+See `example fabfile`_ and `project setup guidelines`_.
 
 The workflow would be as follows:
+
 - add a feature of fix a bug on git branch ``devel``
 - deploy to remote staging server::
 
@@ -50,5 +51,6 @@ The workflow would be as follows:
 
     fab -H user@host:port fetch_data:live
 
-
 .. _Fabric: http://fabfile.org
+.. _example fabfile: http://gist.github.com/768913
+.. _project setup guidelines: http://github.com/mrts/django-commands/wiki/Proper-setup-of-a-Django-project
