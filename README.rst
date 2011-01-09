@@ -35,4 +35,20 @@ The commands have been created for automating remote deployments with Fabric_.
 
 See https://gist.github.com/768913 for example usage.
 
+The workflow would be as follows:
+- add a feature of fix a bug on git branch ``devel``
+- deploy to remote staging server::
+
+    fab -H user@host:port deploy:stage
+
+- when client is happy with the change, merge it to ``master``
+- deploy to remote production server::
+
+    fab -H user@host:port deploy:live
+
+- fetch database content and uploaded files from remote server as needed::
+
+    fab -H user@host:port fetch_data:live
+
+
 .. _Fabric: http://fabfile.org
