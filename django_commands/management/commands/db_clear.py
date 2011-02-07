@@ -48,7 +48,10 @@ def _drop_tables(connection, dbname, all_tables):
     tables = (connection.introspection.table_names() if all_tables else
             connection.introspection.django_table_names(only_existing=True))
     qn = connection.ops.quote_name
-    drop_table_sql = ('DROP TABLE %s;' % qn(table) for table in tables)
+    # use CASCADE with all backends except SQLite
+    sql_template = ('DROP TABLE %s;' if 'sqlite' in str(connection) else
+            'DROP TABLE %s CASCADE;')
+    drop_table_sql = (sql_template % qn(table) for table in tables)
 
     try:
         cursor = connection.cursor()
