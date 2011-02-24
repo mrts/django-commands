@@ -1,5 +1,6 @@
 from django.core.management.base import CommandError, LabelCommand
 from django.utils.datastructures import SortedDict
+from django_commands.utils import parse_apps_and_models, get_model_cls
 
 class Command(LabelCommand):
     args = '<appname.Model> [appname.Model] ...>'
@@ -8,26 +9,16 @@ class Command(LabelCommand):
             "<appname.Model>.")
 
     def handle_label(self, label, **options):
-        from django.db.models import get_model
-
-        apps_and_models = (chunk.split(".", 1) for chunk in label.split())
-
-        try:
-            for appname, modelname in apps_and_models:
-                model = get_model(appname, modelname)
-                if not model:
-                    raise CommandError("Unknown model: %s.%s" %
-                            (appname, modelname))
-                for obj in model.objects.all():
+        for appname, modelname in parse_apps_and_models(label):
+            model = get_model_cls(appname, modelname)
+            for obj in model.objects.all():
+                try:
                     obj.clear_from_cache()
-        except ValueError:
-            # tuple unpacking failed
-            raise CommandError("Invalid arguments: %s" % label)
-        except AttributeError:
-            # obj doesn't have clear_from_cache()
-            raise CommandError("Object `%s` of model `%s.%s` does not have a "
-                    "`clear_from_cache()` method" % (obj, appname, modelname))
-        except CommandError:
-            raise
-        except Exception, e:
-            raise CommandError("%s occurred: %s" % (e.__class__.__name__, e))
+                except AttributeError:
+                    # obj doesn't have clear_from_cache()
+                    raise CommandError("Object `%s` of model `%s.%s` "
+                            "does not have a `clear_from_cache()` method" %
+                            (obj, appname, modelname))
+                except Exception, e:
+                    raise CommandError("%s occurred: %s" %
+                            (e.__class__.__name__, e))
