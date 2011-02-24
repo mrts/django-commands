@@ -43,8 +43,8 @@ class Command(LabelCommand):
     def _load_postgresql_psycopg2_db(self, db_conf, infile):
         passwd = ('export PGPASSWORD=%s;' % db_conf['password']
                     if db_conf['password'] else '')
-        return os.system('%s psql %s -f %s' %
-                (passwd, build_postgres_args(db_conf), infile))
+        return os.system('%s zcat %s | psql %s -f -' %
+                (passwd, infile, build_postgres_args(db_conf)))
 
     def _load_mysql_db(self, db_conf, infile):
         return os.system('zcat %s | mysqldump %s' %

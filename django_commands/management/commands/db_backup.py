@@ -48,7 +48,7 @@ class Command(LabelCommand):
                     if db_conf['password'] else '')
         outfile = '%s.pgsql.gz' % outfile
         _check_writable(outfile)
-        ret = os.system('%s pg_dump --compress=9 %s > %s' %
+        ret = os.system('%s pg_dump %s | gzip -9 > %s' %
                 (passwd, build_postgres_args(db_conf), outfile))
 
         return ret, outfile
@@ -61,6 +61,7 @@ class Command(LabelCommand):
 
         return ret, outfile
 
+# Be aware of the classic race condition here.
 def _check_writable(filename):
     if os.path.exists(filename):
         raise CommandError("'%s' already exists, won't overwrite." % filename)
