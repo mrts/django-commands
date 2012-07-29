@@ -37,7 +37,7 @@ See `example fabfile`_ and `project setup guidelines`_.
 
 The workflow would be as follows:
 
-- add a feature of fix a bug on git branch ``devel``
+- add a feature or fix a bug on git branch ``devel``
 - deploy to remote staging server::
 
     fab -H user@host:port deploy:stage
