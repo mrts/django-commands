@@ -7,8 +7,13 @@ for the Django web framework:
 - ``db_clear`` -- removes all tables from the database,
 - ``db_backup`` -- creates a backup dump file of the database,
 - ``db_load`` -- loads data from a backup dump file to the database,
+- ``app_db_tables_reset`` -- deletes all data related to the given app
+  from the database,
 - ``cache_clear`` -- calls ``clear_from_cache()`` for all objects
   in given models.
+
+Only ``app_db_tables_reset`` has been tested with Django 1.9, other commands
+may or may not work.
 
 Installation
 ------------
